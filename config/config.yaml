@@ -9,4 +9,4 @@ samples:
     location: "data/genomes/NCYC357_genome.fasta"
     species: "Saccharomyces sp."
     strain: "NCYC357"
-    busco_seed_species: "saccharomyces_cerevisiae_S288C"
+    busco_seed_species: "saccharomyces_cerevisiae_S288C" # Para conferir as opções, rode "funannotate species"

@@ -1,7 +1,12 @@
-to-do:
-add envs properly into envs
-add all to github
+# DESCRIPTION
 
+Intended for genome-only annotations. Written based on the genome-only funannotate tutorial available at https://funannotate.readthedocs.io/en/latest/tutorials.html#genome-assembly-only
+
+
+# NEXT STEPS
+
+1. Add the rest of the rules
+2. Add rules to analyze results 
 
 
 # QUICKSTART
@@ -13,6 +18,7 @@ export FUNANNOTATE_DB=/home/paulo/funannotate_db
 mkdir -p $FUNANNOTATE_DB
 funannotate setup -i all --database $FUNANNOTATE_DB
 ```
+
 
 Responder: 
 - Qual a importância disso?
