@@ -23,7 +23,9 @@ if missing:
 
 rule all:
     input:
-        expand(os.path.join(OUTPUT_DIR, "{sample}", "predict", "{sample}.predicted.fa"), sample=SAMPLES)
+        expand(os.path.join(OUTPUT_DIR, "{sample}", "predict", "{sample}.predicted.fa"), sample=SAMPLES),
+        expand(os.path.join(OUTPUT_DIR, "{sample}", "predict", "predict_results", f"{{species}}_{{strain}}.gbk"), sample=SAMPLES, species=[config['samples'][s]['species'].replace(' ', '_') for s in SAMPLES], strain=[config['samples'][s]['strain'] for s in SAMPLES]),
+        expand(os.path.join(OUTPUT_DIR, "{sample}", "predict", "predict_results", f"{{species}}_{{strain}}.parameters.json"), sample=SAMPLES, species=[config['samples'][s]['species'].replace(' ', '_').lower() for s in SAMPLES], strain=[config['samples'][s]['strain'].lower() for s in SAMPLES])
 
 rule mask:
     input:
@@ -42,7 +44,22 @@ rule predict:
     input:
         masked = os.path.join(OUTPUT_DIR, "{sample}", "mask", "{sample}.masked.fa")
     output:
-        predicted = os.path.abspath(os.path.join(OUTPUT_DIR, "{sample}", "predict", "{sample}.predicted.fa"))
+        gbk = lambda wildcards: os.path.join(
+            OUTPUT_DIR,
+            wildcards.sample,
+            "predict",
+            "predict_results",
+            f"{config['samples'][wildcards.sample]['species'].replace(' ', '_')}_" \
+            f"{config['samples'][wildcards.sample]['strain']}.gbk"
+        )
+        params_json = lambda wildcards: os.path.join(
+            OUTPUT_DIR,
+            wildcards.sample,
+            "predict",
+            "predict_results",
+            f"{config['samples'][wildcards.sample]['species'].replace(' ', '_').lower()}_" \
+            f"{config['samples'][wildcards.sample]['strain'].lower()}.parameters.json"
+        )
     params:
         cpus = config.get("predict_threads", 8),
         species = lambda wildcards: config["samples"][wildcards.sample]["species"],
